@@ -1,0 +1,10 @@
+pyopenssl
+service_identity
+autobahn
+twisted
+ovos_utils>=0.0.1
+json_database>=0.2.6
+pycryptodome
+upnpclient>=0.0.8
+zeroconf>=0.1.6
+webrtcvad==2.0.10
