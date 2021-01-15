@@ -97,39 +97,12 @@ class StreamingSpeechMasterHiveMind(SpeechMasterHiveMind):
 
 
 class SpeechMasterListener(HiveMindListener):
-    def secure_listen(self, key=None, cert=None, factory=None, protocol=None):
-        factory = factory or SpeechMasterHiveMind(self.bus)
-        protocol = protocol or SpeechMasterProtocol
-        return super().secure_listen(key=key, cert=cert,
-                                     factory=factory, protocol=protocol)
-
-    def unsafe_listen(self, factory=None, protocol=None):
-        factory = factory or SpeechMasterHiveMind(self.bus)
-        protocol = protocol or SpeechMasterProtocol
-        return super().unsafe_listen(factory=factory, protocol=protocol)
-
-    def listen(self, factory=None, protocol=None):
-        factory = factory or SpeechMasterHiveMind(self.bus)
-        protocol = protocol or SpeechMasterProtocol
-        return super().listen(factory=factory, protocol=protocol)
+    default_protocol = SpeechMasterProtocol
+    default_factory = SpeechMasterHiveMind
 
 
-class StreamingSpeechMasterListener(HiveMindListener):
-    def secure_listen(self, key=None, cert=None, factory=None, protocol=None):
-        factory = factory or StreamingSpeechMasterHiveMind(self.bus)
-        protocol = protocol or SpeechMasterProtocol
-        return super().secure_listen(key=key, cert=cert,
-                                     factory=factory, protocol=protocol)
-
-    def unsafe_listen(self, factory=None, protocol=None):
-        factory = factory or StreamingSpeechMasterHiveMind(self.bus)
-        protocol = protocol or SpeechMasterProtocol
-        return super().unsafe_listen(factory=factory, protocol=protocol)
-
-    def listen(self, factory=None, protocol=None):
-        factory = factory or StreamingSpeechMasterHiveMind(self.bus)
-        protocol = protocol or SpeechMasterProtocol
-        return super().listen(factory=factory, protocol=protocol)
+class StreamingSpeechMasterListener(SpeechMasterListener):
+    default_factory = StreamingSpeechMasterHiveMind
 
 
 def get_listener(port=6799, max_connections=-1, bus=None, streaming=False):
