@@ -1,17 +1,18 @@
 import webrtcvad
-import threading
 from collections import deque
-from queue import Queue, Empty
+from queue import Empty
 from threading import Thread
 
+# TODO
+# https://github.com/HelloChatterbox/speech2text
 from mycroft.stt import STTFactory
 
 vad = webrtcvad.Vad(3)
 
 
-class WebsocketAudioListener(Thread):
+class WebsocketAudioStreamingListener(Thread):
     def __init__(self, factory, client, queue, sample_rate=16000):
-        super(WebsocketAudioListener, self).__init__()
+        super().__init__()
         self.client = client
         self.factory = factory
         self.stt = STTFactory.create()
@@ -24,7 +25,7 @@ class WebsocketAudioListener(Thread):
             self.sample_rate / float(BLOCKS_PER_SECOND))  # 320
         padding_ms = 600
         block_duration_ms = 1000 * \
-            self.block_size // self.sample_rate  # 20
+                            self.block_size // self.sample_rate  # 20
         num_padding_blocks = padding_ms // block_duration_ms  # 30
         self.ratio = 0.75
 
@@ -45,7 +46,7 @@ class WebsocketAudioListener(Thread):
                 audio_block = audio_data[: self.block_size]
                 audio_data = audio_data[self.block_size:]
                 self.process_audio(audio_block)
-        
+
         self.stop()
 
     def keep_running(self):

@@ -2,13 +2,14 @@ from threading import Thread
 import tempfile
 from queue import Empty
 
+
 class WebsocketAudioSource(Thread):
     def __init__(self, queue, tts):
         super(WebsocketAudioSource, self).__init__()
         self.queue = queue
         self.tts = tts
         self.running = True
-        
+
     def run(self):
         while self.running:
             try:
@@ -22,4 +23,3 @@ class WebsocketAudioSource(Thread):
             (wav_file, _) = self.tts.get_tts(utterance, wav_file)
             audio_data = wav_file.read()
             client.sendMessage(audio_data, True)
-        
